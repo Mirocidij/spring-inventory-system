@@ -12,10 +12,5 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = {PgContainer.class})
-public class BaseIntegrationTest {
-    protected final String baseUrl;
-
-    public BaseIntegrationTest(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
+public class BaseTest {
 }

@@ -1,15 +1,13 @@
 package com.gh.mirocodij.inventory.system.springinventorysystem;
 
-import com.gh.mirocodij.inventory.system.springinventorysystem.fixtures.BaseIntegrationTest;
+import com.gh.mirocodij.inventory.system.springinventorysystem.fixtures.BaseTest;
 import org.junit.jupiter.api.Test;
 
-class SpringInventorySystemApplicationTests extends BaseIntegrationTest {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    public SpringInventorySystemApplicationTests() {
-        super("/");
-    }
-
+class SpringInventorySystemApplicationTests extends BaseTest {
     @Test
     void contextLoads() {
+        assertThat(1).isEqualTo(1);
     }
 }
