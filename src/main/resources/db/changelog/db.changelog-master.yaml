@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: syacutko
+      changes:
+        - sqlFile:
+            dbms: postgresql
+            path: migration-scripts/initdb.sql
+            relativeToChangelogFile: true

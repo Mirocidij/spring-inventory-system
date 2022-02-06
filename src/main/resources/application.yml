@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    username: ${DB_USERNAME:inventory_manager}
+    password: ${DB_PASSWORD:12345}
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/inventory_system}
+  thymeleaf:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+server:
+  port: 19228
