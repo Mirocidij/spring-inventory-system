@@ -5,7 +5,6 @@ import com.gh.mirocodij.inventory.system.springinventorysystem.fixtures.BaseInte
 import com.gh.mirocodij.inventory.system.springinventorysystem.model.DemoModelDto;
 import com.gh.mirocodij.inventory.system.springinventorysystem.repository.DemoModelRepository;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -31,9 +30,6 @@ public class DemoControllerTest extends BaseIntegrationTest {
     @Autowired
     public ObjectMapper mapper;
 
-    @Autowired
-    public DataSource dataSource;
-
     public DemoControllerTest() {
         super("/demo");
     }
@@ -53,9 +49,5 @@ public class DemoControllerTest extends BaseIntegrationTest {
         assertThat(demoModelFromResponse).isNotNull();
         assertThat(demoModelFromResponse.getDemoField()).isEqualTo("another value");
         assertThat(demoModelFromResponse.getId()).isNotNull();
-    }
-
-    public void test2() {
-
     }
 }
