@@ -55,7 +55,7 @@ public class DemoController {
         var demoModelToSave = conversionService.convert(demoModel, DemoModel.class);
         assert demoModelToSave != null;
         DemoModel savedDemoModel = demoModelRepository.save(demoModelToSave);
-
+        demoModelRepository.flush();
         return conversionService.convert(savedDemoModel, DemoModelDto.class);
     }
 
@@ -63,10 +63,9 @@ public class DemoController {
     public DemoModelDto updateDemoModel(@RequestBody DemoModelDto demoModel) {
         log.info("IN <updateDemoModel> METHOD WITH demoModel= {}", demoModel);
 
-        if (demoModel.getId() == null) {
+        if (demoModel.getId() == null || findDemoModelById(demoModel.getId()) == null) {
             throw new NoSuchElementException();
         }
-
         var demoModelToUpdate = conversionService.convert(demoModel, DemoModel.class);
         assert demoModelToUpdate != null;
         DemoModel updatedDemoModel = demoModelRepository.save(demoModelToUpdate);
