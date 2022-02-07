@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,11 +66,10 @@ public class DemoControllerTest extends BaseIntegrationTest {
         sendPost(savedDtoModel);
         DemoModelDto notSavedDtoModel = new DemoModelDto();
         notSavedDtoModel.setDemoField("value which will repeat");
-        var response = mockMvc.perform(post(baseUrl)
+        mockMvc.perform(post(baseUrl)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(notSavedDtoModel)))
-                .andExpect(status().isBadRequest())
-                .andReturn().getResponse();
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -115,14 +113,77 @@ public class DemoControllerTest extends BaseIntegrationTest {
     }
 
     @Test
+    public void getMethodShouldReturnNotFoundBecauseIdNotExist() throws Exception {
+        var notExistId = UUID.randomUUID();
+        mockMvc.perform(get(baseUrl + "/" + notExistId))
+                .andExpect(status().isNotFound())
+                .andReturn().getResponse();
+    }
+
+    @Test
+    public void putMethodShouldReturnUpdatedModel() throws Exception {
+        DemoModelDto demoModelDto = new DemoModelDto();
+        demoModelDto.setDemoField("field before update");
+        var responseBeforeUpdated = mockMvc.perform(post(baseUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(demoModelDto)))
+                .andReturn().getResponse();
+        var demoModelBeforeUpdated = mapper.readValue(responseBeforeUpdated.getContentAsString(), DemoModelDto.class);
+        var id = demoModelBeforeUpdated.getId();
+
+        DemoModelDto demoModelUpdated = new DemoModelDto();
+        demoModelUpdated.setId(id);
+        var updatedField = "field after updated";
+        demoModelUpdated.setDemoField(updatedField);
+        MockHttpServletResponse responseAfterUpdated = mockMvc.perform(put(baseUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(demoModelUpdated)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andReturn().getResponse();
+        var demoModelAfterUpdated = mapper.readValue(responseAfterUpdated.getContentAsString(), DemoModelDto.class);
+        assertThat(demoModelAfterUpdated.getId()).isNotNull();
+        assertThat(demoModelAfterUpdated.getDemoField()).isEqualTo(updatedField);
+    }
+
+    @Test
+    public void putMethodShouldReturnNotFoundBecauseIdNotExist() throws Exception {
+        DemoModelDto demoModelUpdated = new DemoModelDto();
+        var notExistId = UUID.randomUUID();
+        demoModelUpdated.setId(notExistId);
+        mockMvc.perform(put(baseUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(demoModelUpdated)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void deleteMethodShouldReturnIsOk() throws Exception {
+        DemoModelDto demoModelDto = new DemoModelDto();
+        MockHttpServletResponse response = mockMvc.perform(post(baseUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(demoModelDto)))
+                .andReturn().getResponse();
+        var demoModelFromResponse = mapper.readValue(response.getContentAsString(), DemoModelDto.class);
+        var id = demoModelFromResponse.getId();
+
+        mockMvc.perform(delete(baseUrl + "/" + id))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteMethodShouldReturnNotFoundBecauseIdNotExist() throws Exception {
+        var id = UUID.randomUUID();
+        mockMvc.perform(delete(baseUrl + "/" + id))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void getMethodShouldHaveNotFoundStatusIfIdNotExist() throws Exception {
         UUID uuid = UUID.randomUUID();
         mockMvc.perform(get(baseUrl + "/" + uuid))
                 .andExpect(status().isNotFound());
     }
-
-    @Test
-
 
     private void sendPost(DemoModelDto demoModelDto) throws Exception {
         mockMvc.perform(post(baseUrl)
