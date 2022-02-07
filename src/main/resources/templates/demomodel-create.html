@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Model create</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
-<body>
+<body style="padding: 10px">
 <form action="#" th:action="@{/demo-view/model-create}" th:object="${demoModelDto}" method="post">
     <label for="demoField">Model field</label>
-    <input type="text" th:field="*{demoField}" id="demoField" placeholder="Model field">
-    <input type="submit" value="Create Model">
+    <input class="form-control mb-3" style="width: 500px" type="text" th:field="*{demoField}" id="demoField" placeholder="Model field">
+    <input class="btn btn-primary" type="submit" value="Create Model">
 </form>
 </body>
 </html>
