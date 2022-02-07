@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model create</title>
+</head>
+<body>
+<form action="#" th:action="@{/demo-view/model-create}" th:object="${demoModelDto}" method="post">
+    <label for="demoField">Model field</label>
+    <input type="text" th:field="*{demoField}" id="demoField" placeholder="Model field">
+    <input type="submit" value="Create Model">
+</form>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo models</title>
+</head>
+<body>
+<div th:switch="${models}">
+    <h2 th:case="null">No Demo Models found!</h2>
+    <div th:case="*">
+        <h2>Demo Models</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Demo field</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="model : ${models}">
+                <td th:text="${model.id}"></td>
+                <td th:text="${model.demoField}"></td>
+                <td><a th:href="@{/demo-view/model-update/{id}(id=${model.id})}">Edit</a></td>
+                <td><a th:href="@{/demo-view/model-delete/{id}(id=${model.id})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a href="/demo-view/model-create">Create Demo Model</a></p>
+</div>
+</body>
+</html>

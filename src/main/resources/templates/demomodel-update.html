@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model update</title>
+</head>
+<body>
+<form action="#" th:action="@{/demo-view/model-update}" th:object="${model}" method="post">
+    <label for="id">ID</label>
+    <input readonly type="text" th:field="*{id}" id="id" placeholder="ID">
+    <br/>
+    <label for="demoField">Demo field</label>
+    <input type="text" th:field="*{demoField}" id="demoField" placeholder="Demo field">
+    <br/>
+    <input type="submit" value="Update Demo Model">
+</form>
+</body>
+</html>
