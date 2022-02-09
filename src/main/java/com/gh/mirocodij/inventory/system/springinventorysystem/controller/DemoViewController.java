@@ -1,6 +1,7 @@
 package com.gh.mirocodij.inventory.system.springinventorysystem.controller;
 
 import com.gh.mirocodij.inventory.system.springinventorysystem.model.DemoModelDto;
+import com.gh.mirocodij.inventory.system.springinventorysystem.service.DemoModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +19,16 @@ import java.util.UUID;
 @Controller
 @RequestMapping("demo-view")
 public class DemoViewController {
-    private final DemoController demoController;
+    private final DemoModelService demoModelService;
 
     @Autowired
-    public DemoViewController(DemoController demoController) {
-        this.demoController = demoController;
+    public DemoViewController(DemoModelService demoModelService) {
+        this.demoModelService = demoModelService;
     }
 
     @GetMapping("/models")
     public String findAllDemoModels(Model model) {
-        List<DemoModelDto> dtoList = demoController.findAllDemoModels();
+        List<DemoModelDto> dtoList = demoModelService.findAllDemoModels();
         model.addAttribute("models",dtoList);
         return "demomodel-list";
     }
@@ -39,26 +40,26 @@ public class DemoViewController {
 
     @PostMapping("/model-create")
     public String createDemoModel(DemoModelDto demoModelDto) {
-        demoController.saveDemoModel(demoModelDto);
+        demoModelService.saveDemoModel(demoModelDto);
         return"redirect:models";
     }
 
     @GetMapping("/model-update/{id}")
     public String updateProjectForm(@PathVariable("id") UUID id, Model model) {
-        DemoModelDto demoModelDto = demoController.findDemoModelById(id);
+        DemoModelDto demoModelDto = demoModelService.findDemoModelById(id);
         model.addAttribute("model", demoModelDto);
         return "demomodel-update";
     }
 
     @PostMapping("/model-update")
     public String updateProject(DemoModelDto demoModelDto) {
-        demoController.updateDemoModel(demoModelDto);
+        demoModelService.updateDemoModel(demoModelDto);
         return "redirect:models";
     }
 
     @GetMapping("/model-delete/{id}")
     public String deleteProject(@PathVariable("id") UUID id) {
-        demoController.deleteDemoModelById(id);
+        demoModelService.deleteDemoModelById(id);
         return "redirect:/demo-view/models";
     }
 }

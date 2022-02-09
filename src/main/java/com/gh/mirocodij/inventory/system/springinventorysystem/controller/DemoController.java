@@ -3,8 +3,10 @@ package com.gh.mirocodij.inventory.system.springinventorysystem.controller;
 import com.gh.mirocodij.inventory.system.springinventorysystem.model.DemoModel;
 import com.gh.mirocodij.inventory.system.springinventorysystem.model.DemoModelDto;
 import com.gh.mirocodij.inventory.system.springinventorysystem.repository.DemoModelRepository;
+import com.gh.mirocodij.inventory.system.springinventorysystem.service.DemoModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,64 +25,35 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RestController
 @RequestMapping("/demo")
 @RequiredArgsConstructor
 public class DemoController {
-    private final DemoModelRepository demoModelRepository;
-    private final ConversionService conversionService;
+    DemoModelService demoModelService;
 
     @GetMapping
     public List<DemoModelDto> findAllDemoModels() {
-        log.info("IN <findAllDemoModels> METHOD");
-
-        return demoModelRepository.findAll().stream()
-                .map(demoModel -> conversionService.convert(demoModel, DemoModelDto.class))
-                .collect(Collectors.toList());
+        return demoModelService.findAllDemoModels();
     }
 
     @GetMapping("/{id}")
     public DemoModelDto findDemoModelById(@PathVariable UUID id) {
-        log.info("IN <findDemoModelById> METHOD WITH id= {}", id);
-
-        var demoModel = demoModelRepository.findById(id).orElseThrow();
-        return conversionService.convert(demoModel, DemoModelDto.class);
+        return demoModelService.findDemoModelById(id);
     }
 
     @PostMapping
     public DemoModelDto saveDemoModel(@RequestBody DemoModelDto demoModel) {
-        log.info("IN <saveDemoModel> METHOD WITH demoModel= {}", demoModel);
-
-        var demoModelToSave = conversionService.convert(demoModel, DemoModel.class);
-        assert demoModelToSave != null;
-        DemoModel savedDemoModel = demoModelRepository.save(demoModelToSave);
-
-        return conversionService.convert(savedDemoModel, DemoModelDto.class);
+        return demoModelService.saveDemoModel(demoModel);
     }
 
     @PutMapping
     public DemoModelDto updateDemoModel(@RequestBody DemoModelDto demoModel) {
-        log.info("IN <updateDemoModel> METHOD WITH demoModel= {}", demoModel);
-
-        if (demoModel.getId() == null) {
-            throw new NoSuchElementException();
-        }
-
-        var demoModelToUpdate = conversionService.convert(demoModel, DemoModel.class);
-        assert demoModelToUpdate != null;
-        DemoModel updatedDemoModel = demoModelRepository.save(demoModelToUpdate);
-
-        return conversionService.convert(updatedDemoModel, DemoModelDto.class);
+        return demoModelService.updateDemoModel(demoModel);
     }
 
     @DeleteMapping("/{id}")
     public void deleteDemoModelById(@PathVariable UUID id) {
-        log.info("IN <deleteDemoModelById> METHOD WITH id= {}", id);
-
-        var demoModelToRemove = demoModelRepository.findById(id).orElseThrow();
-
-        demoModelRepository.delete(demoModelToRemove);
+        demoModelService.deleteDemoModelById(id);
     }
 
     @ExceptionHandler(value = {NoSuchElementException.class})
