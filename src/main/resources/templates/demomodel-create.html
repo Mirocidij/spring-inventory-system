@@ -8,6 +8,7 @@
 <body style="padding: 10px">
 <form action="#" th:action="@{/demo-view/model-create}" th:object="${demoModelDto}" method="post">
     <label for="demoField">Model field</label>
+    <div style="color: red" th:if="${err != null}" th:text="${err}"></div>
     <input class="form-control mb-3" style="width: 500px" type="text" th:field="*{demoField}" id="demoField" placeholder="Model field">
     <input class="btn btn-primary" type="submit" value="Create Model">
 </form>

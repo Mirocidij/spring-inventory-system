@@ -10,6 +10,7 @@
     <label for="id">ID</label>
     <input class="form-control mb-3" style="width: 500px" readonly type="text" th:field="*{id}" id="id" placeholder="ID">
     <br/>
+    <div style="color: red" th:if="${err != null}" th:text="${err}"></div>
     <label for="demoField">Demo field</label>
     <input class="form-control mb-3" style="width: 500px" type="text" th:field="*{demoField}" id="demoField" placeholder="Demo field">
     <br/>

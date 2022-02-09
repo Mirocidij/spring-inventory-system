@@ -3,6 +3,7 @@ package com.gh.mirocodij.inventory.system.springinventorysystem.controller;
 import com.gh.mirocodij.inventory.system.springinventorysystem.model.DemoModelDto;
 import com.gh.mirocodij.inventory.system.springinventorysystem.service.DemoModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +42,15 @@ public class DemoViewController {
     }
 
     @PostMapping("/model-create")
-    public String createDemoModel(DemoModelDto demoModelDto) {
-        demoModelService.saveDemoModel(demoModelDto);
-        return"redirect:models";
+    public String createDemoModel(DemoModelDto demoModelDto, Model model) {
+        try {
+            demoModelService.saveDemoModel(demoModelDto);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("err", "The field must be unique!");
+            model.addAttribute("model", demoModelDto);
+            return "demomodel-create";
+        }
+        return "redirect:models";
     }
 
     @GetMapping("/model-update/{id}")
@@ -54,8 +61,14 @@ public class DemoViewController {
     }
 
     @PostMapping("/model-update")
-    public String updateProject(DemoModelDto demoModelDto) {
-        demoModelService.updateDemoModel(demoModelDto);
+    public String updateProject(DemoModelDto demoModelDto, Model model) {
+        try {
+            demoModelService.updateDemoModel(demoModelDto);
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("err", "The field must be unique!");
+            model.addAttribute("model", demoModelDto);
+            return "demomodel-update";
+        }
         return "redirect:models";
     }
 
