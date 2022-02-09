@@ -27,7 +27,9 @@ public class DemoModelConverters {
         public DemoModel convert(DemoModelDto source) {
             var demoModel = new DemoModel();
             demoModel.setDemoField(source.getDemoField());
-            demoModel.setId(source.getId());
+            if(source.getId() != null) {
+                demoModel.setId(source.getId());
+            }
             return demoModel;
         }
     }
