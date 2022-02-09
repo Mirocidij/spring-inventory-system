@@ -29,7 +29,9 @@ public class DemoViewController {
     @GetMapping("/models")
     public String findAllDemoModels(Model model) {
         List<DemoModelDto> dtoList = demoModelService.findAllDemoModels();
-        model.addAttribute("models",dtoList);
+        if (dtoList.size() != 0) {
+            model.addAttribute("models", dtoList);
+        }
         return "demomodel-list";
     }
 
