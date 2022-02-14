@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
